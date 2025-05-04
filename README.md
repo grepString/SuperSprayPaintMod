@@ -1,26 +1,25 @@
 # SuperSprayPaint Mod for Drive Beyond Horizons
 
-A simple mod that allows you to spawn paint bombs with custom colors and finishes. This mod provides a clean, user-friendly interface for selecting paint colors and sheen types, then spawning paint bombs with those properties.
+A simple mod that allows you to spawn paint bombs with various colors and finishes. Press F5 to instantly spawn two of each color paint bomb (one matte, one metallic) in a neat grid layout in front of your character.
 
 ## Features
 
 - Spawn paint bombs with various colors and sheen types
-- Intuitive mouse-based UI with color circles for easy selection
-- Two rows of color options - standard colors and metallic variants
-- Easy to use point-and-click interface
-- Single keybind (F5) to access all functionality
+- Simple one-key operation (F5)
+- Organized grid layout for easy selection
+- Spawns both matte and metallic versions of each color
+- Lightweight and non-intrusive
 
 ## Usage
 
 ### Controls
 
-1. Press `F5` to open the Paint UI
-2. Use your mouse to:
-   - Click on a color to select it
-   - Click on a sheen type to select it
-   - Click "Spawn Paint Bomb" to create a paint bomb with your selected settings
-   - Click "Close" to close the UI
-3. The paint bomb will spawn in front of your character
+1. Face the direction where you want the paint bombs to appear
+2. Press `F5` to instantly spawn all paint bombs in a grid in front of your character
+3. Each color will have two variants:
+   - Regular (matte) finish
+   - Metallic finish (positioned slightly behind the matte version)
+4. The paint bombs will be arranged in a neat grid for easy selection
 
 ### Available Colors
 
@@ -68,9 +67,9 @@ If you encounter issues:
 ## Technical Details
 
 This mod uses UE4SS Lua scripting to:
-1. Create a custom UI widget for color and sheen selection
-2. Spawn paint bomb actors in the game world
-3. Set custom properties on those actors
+1. Spawn paint bomb actors in the game world when F5 is pressed
+2. Set custom colors and sheen properties on those actors
+3. Arrange the paint bombs in an organized grid layout
 
 The mod is designed to be lightweight and non-intrusive, only activating when you press the F5 key.
 
