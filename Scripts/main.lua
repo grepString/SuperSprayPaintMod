@@ -154,7 +154,7 @@ end
 
 -- Function to spawn all paint bombs
 function SpawnAllPaintBombs()
-    print("[SuperSprayPaintMod] Spawning all paint bombs")
+    print("[SuperSprayPaintMod] Spawning all paint cans")
 
     -- Get the player controller and pawn
     local pc = FindFirstOf("PlayerController")
@@ -295,7 +295,7 @@ function SpawnAllPaintBombs()
             if success then
                 mattePaintBomb = result
             else
-                print("[SuperSprayPaintMod] Error spawning matte paint bomb: " .. tostring(result))
+                print("[SuperSprayPaintMod] Error spawning matte paint can: " .. tostring(result))
             end
 
             if mattePaintBomb then
@@ -339,7 +339,7 @@ function SpawnAllPaintBombs()
             if success then
                 metallicPaintBomb = result
             else
-                print("[SuperSprayPaintMod] Error spawning metallic paint bomb: " .. tostring(result))
+                print("[SuperSprayPaintMod] Error spawning metallic paint can: " .. tostring(result))
             end
 
             if metallicPaintBomb then
@@ -349,14 +349,14 @@ function SpawnAllPaintBombs()
         end
     end
 
-    print("[SuperSprayPaintMod] All paint bombs spawned - 4 of each color and sheen type (matte and metallic)")
+    print("[SuperSprayPaintMod] All paint cans spawned - 4 of each color and sheen type (matte and metallic)")
 end
 
 -- Register keybind for F5 to spawn all paint bombs
 RegisterKeyBind(Key.F5, function()
-    print("[SuperSprayPaintMod] F5 key detected, spawning paint bombs")
+    print("[SuperSprayPaintMod] F5 key detected, spawning paint cans")
     SpawnAllPaintBombs()
     return false
 end)
 
-print("[SuperSprayPaintMod] Initialization complete - Press F5 to spawn paint bombs")
+print("[SuperSprayPaintMod] Initialization complete - Press F5 to spawn paint cans")
