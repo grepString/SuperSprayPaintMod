@@ -1,14 +1,27 @@
 -- SuperSprayPaintMod for Drive Beyond Horizons
 -- Main script file
+--
+-- This mod spawns paint bombs with various colors and finishes.
+-- Each color has 4 matte and 4 metallic cans.
+-- Press F5 to spawn all paint bombs in a grid in front of your character.
+--
+-- Updated to properly set both matte and metallic properties:
+-- - Matte cans have Metallic=0.0 and CustomMetallic=0.0
+-- - Metallic cans have Metallic=1.0 and CustomMetallic=1.0
+-- - Both types use UseCustomColor=true to ensure custom settings take effect
+--
+-- Added calls to force visual updates:
+-- - Calls OnRep_Color and OnRep_Metallic functions to trigger visual updates
+-- - This ensures the paint cans display the correct color immediately
+-- - Without these calls, the cans would only update visually after a game reload
 
 print("[SuperSprayPaintMod] Mod loaded")
 
 -- Configuration variables
 local CONFIG = {
-    -- Distance from player's Z position to the ground
+    -- Distance from player's Z position to the ground (fallback if line trace fails)
     -- Based on the player model files found in Content/Player
-    -- MaleCharacter.uasset and FemaleCharacter.uasset suggest standard UE4 character setup
-    GROUND_OFFSET = 84,
+    GROUND_OFFSET = 80,
 
     -- Distance in front of the player to spawn the grid
     FORWARD_DISTANCE = 250,
@@ -16,14 +29,13 @@ local CONFIG = {
     -- Spacing between paint cans in the grid
     HORIZONTAL_SPACING = 90,
     DEPTH_SPACING = 140,
-    SHEEN_OFFSET = 60,
-
-    -- Number of columns in the grid
-    GRID_COLUMNS = 4,
 
     -- Height above ground level to spawn cans
-    -- Small positive value to ensure cans don't clip into ground
-    GROUND_CLEARANCE = 5
+    -- Increased to prevent cans from clipping into ground or exploding
+    GROUND_CLEARANCE = 20,
+
+    -- Debug mode for additional logging
+    DEBUG = false
 }
 
 -- Define available colors and sheen types
@@ -42,12 +54,118 @@ local Colors = {
 }
 
 local SheenTypes = {
-    { name = "Matte", value = 0 },
-    { name = "Metallic", value = 1 }
+    { value = 0 }, -- Matte
+    { value = 1 }  -- Metallic
 }
 
--- This function has been removed and its functionality integrated directly into SpawnAllPaintBombs
--- to ensure consistent grid layout regardless of player view angle
+-- Helper function to set properties on a paint bomb
+local function SetPaintBombProperties(paintBomb, color, isMetallic)
+    local sheenTypeIndex = isMetallic and 2 or 1
+    local metallicValue = isMetallic and 1.0 or 0.0
+    local typeStr = isMetallic and "metallic" or "matte"
+
+    -- Set properties
+    if paintBomb.PaintColor then
+        paintBomb.PaintColor = color.color
+    end
+
+    if paintBomb.SheenType then
+        paintBomb.SheenType = SheenTypes[sheenTypeIndex].value
+    end
+
+    -- Try alternative property names
+    if paintBomb.Color then
+        paintBomb.Color = color.color
+    end
+
+    if paintBomb.Sheen then
+        paintBomb.Sheen = SheenTypes[sheenTypeIndex].value
+    end
+
+    -- Set Metallic property directly
+    if paintBomb.Metallic ~= nil then
+        paintBomb.Metallic = metallicValue
+        if CONFIG.DEBUG then
+            print(string.format("[SuperSprayPaintMod] Set Metallic=%.1f for %s can", metallicValue, typeStr))
+        end
+    end
+
+    -- Set UseCustomColor property if it exists
+    if paintBomb.UseCustomColor ~= nil then
+        paintBomb.UseCustomColor = true
+        if CONFIG.DEBUG then
+            print(string.format("[SuperSprayPaintMod] Set UseCustomColor=true for %s can", typeStr))
+        end
+    end
+
+    -- Set CustomColor property if it exists
+    if paintBomb.CustomColor ~= nil then
+        paintBomb.CustomColor = color.color
+        if CONFIG.DEBUG then
+            print(string.format("[SuperSprayPaintMod] Set CustomColor for %s can", typeStr))
+        end
+    end
+
+    -- Set CustomMetallic property if it exists
+    if paintBomb.CustomMetallic ~= nil then
+        paintBomb.CustomMetallic = metallicValue
+        if CONFIG.DEBUG then
+            print(string.format("[SuperSprayPaintMod] Set CustomMetallic=%.1f for %s can", metallicValue, typeStr))
+        end
+    end
+
+    -- Call OnRep functions to force visual update
+    pcall(function()
+        if paintBomb.OnRep_Color then
+            paintBomb:OnRep_Color()
+            if CONFIG.DEBUG then
+                print(string.format("[SuperSprayPaintMod] Called OnRep_Color for %s can", typeStr))
+            end
+        end
+
+        if paintBomb.OnRepColor then
+            paintBomb:OnRepColor()
+            if CONFIG.DEBUG then
+                print(string.format("[SuperSprayPaintMod] Called OnRepColor for %s can", typeStr))
+            end
+        end
+
+        if paintBomb.OnRep_Metallic then
+            paintBomb:OnRep_Metallic()
+            if CONFIG.DEBUG then
+                print(string.format("[SuperSprayPaintMod] Called OnRep_Metallic for %s can", typeStr))
+            end
+        end
+
+        if paintBomb.OnRepMetallic then
+            paintBomb:OnRepMetallic()
+            if CONFIG.DEBUG then
+                print(string.format("[SuperSprayPaintMod] Called OnRepMetallic for %s can", typeStr))
+            end
+        end
+    end)
+
+    -- Try to stabilize the physics
+    pcall(function()
+        -- Get the root component (usually the physics component)
+        local rootComp = paintBomb.RootComponent
+        if rootComp then
+            -- Try to put the physics to sleep to prevent explosions
+            if rootComp.PutRigidBodyToSleep then
+                rootComp:PutRigidBodyToSleep()
+            end
+
+            -- Try to set initial linear/angular velocity to zero
+            if rootComp.SetPhysicsLinearVelocity then
+                rootComp:SetPhysicsLinearVelocity({X=0, Y=0, Z=0})
+            end
+
+            if rootComp.SetPhysicsAngularVelocityInDegrees then
+                rootComp:SetPhysicsAngularVelocityInDegrees({X=0, Y=0, Z=0})
+            end
+        end
+    end)
+end
 
 -- Function to spawn all paint bombs
 function SpawnAllPaintBombs()
@@ -78,16 +196,31 @@ function SpawnAllPaintBombs()
     local pawnRotation = pawn:K2_GetActorRotation()
 
     -- Calculate ground level using the configured offset
-    -- Based on the player model files found in Content/Player
     local groundLevel = location.Z - CONFIG.GROUND_OFFSET
 
+    -- Get the world for actor spawning
+    local world
+    local success, result = pcall(function()
+        return pawn:GetWorld()
+    end)
+
+    if success and result then
+        world = result
+    else
+        print("[SuperSprayPaintMod] Error getting world: " .. tostring(result))
+        print("[SuperSprayPaintMod] Cannot spawn paint bombs without a valid world")
+        return
+    end
+
     -- Debug output
-    print(string.format("[SuperSprayPaintMod] Pawn Rotation - Pitch: %.1f, Yaw: %.1f",
-        pawnRotation.Pitch or 0, pawnRotation.Yaw or 0))
-    print(string.format("[SuperSprayPaintMod] Player Location - X: %.1f, Y: %.1f, Z: %.1f",
-        location.X, location.Y, location.Z))
-    print(string.format("[SuperSprayPaintMod] Ground Level - Z: %.1f (Using offset: %.1f)",
-        groundLevel, CONFIG.GROUND_OFFSET))
+    if CONFIG.DEBUG then
+        print(string.format("[SuperSprayPaintMod] Pawn Rotation - Pitch: %.1f, Yaw: %.1f",
+            pawnRotation.Pitch or 0, pawnRotation.Yaw or 0))
+        print(string.format("[SuperSprayPaintMod] Player Location - X: %.1f, Y: %.1f, Z: %.1f",
+            location.X, location.Y, location.Z))
+        print(string.format("[SuperSprayPaintMod] Ground Level - Z: %.1f (Using offset: %.1f)",
+            groundLevel, CONFIG.GROUND_OFFSET))
+    end
 
     -- Calculate forward and right vectors based ONLY on Yaw (horizontal rotation)
     -- This is the key to making the grid spawn consistently regardless of where the player is looking
@@ -106,18 +239,16 @@ function SpawnAllPaintBombs()
     -- Grid configuration - using values from CONFIG
     local horizontalSpacing = CONFIG.HORIZONTAL_SPACING  -- Space between columns (left to right)
     local depthSpacing = CONFIG.DEPTH_SPACING           -- Space between rows (front to back)
-    local sheenOffset = CONFIG.SHEEN_OFFSET             -- Distance between matte and metallic versions
     local forwardDistance = CONFIG.FORWARD_DISTANCE     -- Distance in front of player
 
-    -- Use the calculated ground level plus a small offset to ensure cans are visible
-    local baseHeight = groundLevel + CONFIG.GROUND_CLEARANCE  -- Just slightly above ground level
+    -- Calculate base height for all cans
+    local baseHeight = groundLevel + CONFIG.GROUND_CLEARANCE
 
-    -- Debug output for height calculation
-    print(string.format("[SuperSprayPaintMod] Base Height - Ground Z: %.1f, Can Z: %.1f, Offset: %.1f",
-        groundLevel, baseHeight, baseHeight - groundLevel))
-
-    -- Number of columns in our grid
-    local numColumns = CONFIG.GRID_COLUMNS
+    -- Debug output for base height
+    if CONFIG.DEBUG then
+        print(string.format("[SuperSprayPaintMod] Base Height for cans - Z: %.1f (Ground + %.1f)",
+            baseHeight, CONFIG.GROUND_CLEARANCE))
+    end
 
     -- Create a rotation for all paint bombs (only Yaw component)
     local spawnRotation = {
@@ -126,96 +257,94 @@ function SpawnAllPaintBombs()
         Roll = 0
     }
 
-    -- For each color, spawn 4 of each sheen type (matte and metallic)
+    -- For each color, spawn 4 of each sheen type (matte and metallic) in rows
+    -- Each row will have one color with both matte and metallic versions side by side
     for i, color in ipairs(Colors) do
-        -- Calculate grid position (0-based index)
-        local gridIndex = i - 1
-        local col = gridIndex % numColumns
-        local row = math.floor(gridIndex / numColumns)
-
-        -- Calculate offsets - center the grid by subtracting half the total width
-        local centerOffset = (numColumns - 1) * horizontalSpacing / 2
-        local offsetX = (col * horizontalSpacing) - centerOffset
+        -- Calculate row index (0-based)
+        local row = i - 1
         local offsetY = row * depthSpacing
 
-        -- Debug output for offsets and vectors
-        if i == 1 then
-            print(string.format("[SuperSprayPaintMod] Offsets - X: %.1f, Y: %.1f", offsetX, offsetY))
+        -- Debug output for vectors
+        if CONFIG.DEBUG and i == 1 then
             print(string.format("[SuperSprayPaintMod] Forward - X: %.2f, Y: %.2f", forwardX, forwardY))
             print(string.format("[SuperSprayPaintMod] Right - X: %.2f, Y: %.2f", rightX, rightY))
         end
 
-        local world = pawn:GetWorld()
-
-        -- Spawn 4 matte versions
+        -- Spawn 4 matte versions (left side of the row)
         for j = 1, 4 do
             -- Calculate position with slight offset for each copy
             local offsetMultiplier = (j - 1) * 20  -- 20 units apart
 
-            local matteX = location.X + (forwardX * forwardDistance) + (rightX * offsetX) + (rightX * offsetMultiplier)
-            local matteY = location.Y + (forwardY * forwardDistance) + (rightY * offsetX) + (rightY * offsetMultiplier)
+            -- Center the grid horizontally
+            local centerOffset = 1.5 * horizontalSpacing
+
+            -- Position for matte cans (left side)
+            local matteX = location.X + (forwardX * forwardDistance) + (rightX * (-centerOffset + offsetMultiplier))
+            local matteY = location.Y + (forwardY * forwardDistance) + (rightY * (-centerOffset + offsetMultiplier)) + (forwardY * offsetY)
             local matteZ = baseHeight
 
             -- Debug output for first can
-            if i == 1 and j == 1 then
-                print(string.format("[SuperSprayPaintMod] First can position - X: %.1f, Y: %.1f, Z: %.1f",
+            if CONFIG.DEBUG and i == 1 and j == 1 then
+                print(string.format("[SuperSprayPaintMod] First matte can position - X: %.1f, Y: %.1f, Z: %.1f",
                     matteX, matteY, matteZ))
             end
 
             local matteLocation = { X = matteX, Y = matteY, Z = matteZ }
-            local mattePaintBomb = world:SpawnActor(paintBombClass, matteLocation, spawnRotation)
+            local mattePaintBomb
+
+            -- Safely spawn the actor
+            local success, result = pcall(function()
+                return world:SpawnActor(paintBombClass, matteLocation, spawnRotation)
+            end)
+
+            if success then
+                mattePaintBomb = result
+            else
+                print("[SuperSprayPaintMod] Error spawning matte paint bomb: " .. tostring(result))
+            end
 
             if mattePaintBomb then
-                -- Set properties
-                if mattePaintBomb.PaintColor then
-                    mattePaintBomb.PaintColor = color.color
-                end
-
-                if mattePaintBomb.SheenType then
-                    mattePaintBomb.SheenType = SheenTypes[1].value
-                end
-
-                -- Try alternative property names
-                if mattePaintBomb.Color then
-                    mattePaintBomb.Color = color.color
-                end
-
-                if mattePaintBomb.Sheen then
-                    mattePaintBomb.Sheen = SheenTypes[1].value
-                end
+                -- Set properties and apply visual updates
+                SetPaintBombProperties(mattePaintBomb, color, false) -- false = matte
             end
         end
 
-        -- Spawn 4 metallic versions
+        -- Spawn 4 metallic versions (right side of the row)
         for j = 1, 4 do
             -- Calculate position with slight offset for each copy
             local offsetMultiplier = (j - 1) * 20  -- 20 units apart
 
-            local metallicX = location.X + (forwardX * (forwardDistance + sheenOffset)) + (rightX * offsetX) + (rightX * offsetMultiplier)
-            local metallicY = location.Y + (forwardY * (forwardDistance + sheenOffset)) + (rightY * offsetX) + (rightY * offsetMultiplier)
+            -- Center the grid horizontally
+            local centerOffset = 1.5 * horizontalSpacing
+
+            -- Position for metallic cans (right side)
+            local metallicX = location.X + (forwardX * forwardDistance) + (rightX * (horizontalSpacing - centerOffset + offsetMultiplier))
+            local metallicY = location.Y + (forwardY * forwardDistance) + (rightY * (horizontalSpacing - centerOffset + offsetMultiplier)) + (forwardY * offsetY)
             local metallicZ = baseHeight
 
+            -- Debug output for first metallic can
+            if CONFIG.DEBUG and i == 1 and j == 1 then
+                print(string.format("[SuperSprayPaintMod] First metallic can position - X: %.1f, Y: %.1f, Z: %.1f",
+                    metallicX, metallicY, metallicZ))
+            end
+
             local metallicLocation = { X = metallicX, Y = metallicY, Z = metallicZ }
-            local metallicPaintBomb = world:SpawnActor(paintBombClass, metallicLocation, spawnRotation)
+            local metallicPaintBomb
+
+            -- Safely spawn the actor
+            local success, result = pcall(function()
+                return world:SpawnActor(paintBombClass, metallicLocation, spawnRotation)
+            end)
+
+            if success then
+                metallicPaintBomb = result
+            else
+                print("[SuperSprayPaintMod] Error spawning metallic paint bomb: " .. tostring(result))
+            end
 
             if metallicPaintBomb then
-                -- Set properties
-                if metallicPaintBomb.PaintColor then
-                    metallicPaintBomb.PaintColor = color.color
-                end
-
-                if metallicPaintBomb.SheenType then
-                    metallicPaintBomb.SheenType = SheenTypes[2].value
-                end
-
-                -- Try alternative property names
-                if metallicPaintBomb.Color then
-                    metallicPaintBomb.Color = color.color
-                end
-
-                if metallicPaintBomb.Sheen then
-                    metallicPaintBomb.Sheen = SheenTypes[2].value
-                end
+                -- Set properties and apply visual updates
+                SetPaintBombProperties(metallicPaintBomb, color, true) -- true = metallic
             end
         end
     end
