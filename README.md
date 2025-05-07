@@ -1,25 +1,23 @@
 # SuperSprayPaint Mod for Drive Beyond Horizons
 
-A simple mod that allows you to spawn paint bombs with various colors and finishes. Press F5 to instantly spawn two of each color paint bomb (one matte, one metallic) in a neat grid layout in front of your character.
+This mod allows you to spawn paint cans with various colors and finishes.
 
 ## Features
 
-- Spawn paint bombs with various colors and sheen types
+- Spawn paint cans with various colors and sheen types
 - Simple one-key operation (F5)
 - Organized grid layout for easy selection
-- Spawns both matte and metallic versions of each color
-- Lightweight and non-intrusive
+- Spawns 4 matte and 4 metallic versions of each color
 
 ## Usage
 
 ### Controls
 
-1. Face the direction where you want the paint bombs to appear
-2. Press `F5` to instantly spawn all paint bombs in a grid in front of your character
+1. Face the direction where you want the paint cans to appear and look straight ahead with your crosshair (or even slightly up from the horizon)
+2. Press `F5` to instantly spawn all paint cans in a grid in front of your character
 3. Each color will have two variants:
-   - Regular (matte) finish
-   - Metallic finish (positioned slightly behind the matte version)
-4. The paint bombs will be arranged in a neat grid for easy selection
+   - Matte finish (white cans)
+   - Metallic finish (black cans)
 
 ### Available Colors
 
@@ -37,42 +35,47 @@ A simple mod that allows you to spawn paint bombs with various colors and finish
 
 ### Available Sheen Types
 
-- Metallic - Shiny metallic finish
 - Matte - Flat, non-reflective finish
-- Glossy - Shiny, reflective finish
-- Chrome - Mirror-like, highly reflective finish
+- Metallic - Shiny metallic finish
 
 ## Installation
 
-1. Make sure you have UE4SS installed for Drive Beyond Horizons
+1. Make sure you have UE4SS installed for Drive Beyond Horizons (latest version)
 2. Place the SuperSprayPaintMod folder in your game's mods directory:
    `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
-3. Make sure the `enabled.txt` file is present in the mod folder
-4. Add the mod to your `mods.txt` file in the UE4SS Mods directory:
-   ```
-   SuperSprayPaintMod : 1
-   ```
-5. Launch the game
+3. By default this mod will be enabled via enabled.txt in the mods folder. You can drop the mod in and and launch the game.
+
+   There are two ways to enable/disable the mod:
+   - **Method 1 (default)**: Create an empty file named `enabled.txt` in the SuperSprayPaintMod folder
+     - This bypasses the need to edit mods.txt/mods.json
+     - To disable and use the next method, simply delete this file.
+   - **Method 2**: Add the mod to your `mods.txt` and/or `mods.json` file in the UE4SS Mods directory:
+   mods.txt:
+     ```
+     SuperSprayPaintMod : 1
+     ```
+   mods.json:
+     ```json
+     {
+       "SuperSprayPaintMod": true
+     }
+     ```
+4. Launch the game and load into a map
+5. Press F5 in-game to spawn the paint cans
 
 ## Troubleshooting
 
 If you encounter issues:
 
 1. Check the UE4SS console for error messages
-2. Make sure the mod is properly installed and enabled in the mods.txt file
-3. Try using different color and sheen combinations
-4. If paint bombs don't spawn with the correct colors, check the UE4SS console for error messages
-5. Make sure you have the latest version of UE4SS installed
+2. Make sure the mod is properly installed and enabled (either with enabled.txt or in mods.txt/mods.json)
+3. If paint cans spawn in weird positions:
+   - Make sure you're standing on relatively flat ground. Gas Stations and Stores have the best flat ground.
 
-## Technical Details
+## TODO
 
-This mod uses UE4SS Lua scripting to:
-1. Spawn paint bomb actors in the game world when F5 is pressed
-2. Set custom colors and sheen properties on those actors
-3. Arrange the paint bombs in an organized grid layout
-
-The mod is designed to be lightweight and non-intrusive, only activating when you press the F5 key.
+- Add more colors and finishes (maybe even custom colors)
 
 ## Credits
 
-Created for Drive Beyond Horizons using UE4SS Lua scripting
+Special thanks to the UE4SS and Drive Beyond Horizons team for making modding possible.
