@@ -70,6 +70,10 @@ This mod allows you to spawn paint cans with various colors and finishes.
 4. Launch the game and load into a map
 5. Press F5 in-game to spawn the paint cans
 
+## Known Issues
+
+- The game saves normally, but if you try to exit via the in-game menu, the game will crash. While it *is* annoying, it's relatively harmless.
+
 ## Troubleshooting
 
 If you encounter issues:
