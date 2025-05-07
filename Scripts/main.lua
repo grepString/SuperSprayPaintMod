@@ -207,17 +207,25 @@ function SpawnAllPaintBombs()
             groundLevel, CONFIG.GROUND_OFFSET))
     end
 
-    -- Calculate forward and right vectors based ONLY on Yaw (horizontal rotation)
+    -- Create a fixed grid orientation that's always aligned with the world axes
+    -- but rotated to face the player's direction
     local yaw = pawnRotation.Yaw or 0
     local yawRadians = yaw * (3.14159 / 180.0)
 
-    -- Forward vector points in the direction the player is facing horizontally
+    -- Calculate forward and right vectors using the yaw angle
+    -- This ensures consistent grid orientation regardless of player's facing direction
     local forwardX = math.cos(yawRadians)
     local forwardY = math.sin(yawRadians)
 
     -- Right vector is perpendicular to forward (90 degrees clockwise)
     local rightX = -forwardY
     local rightY = forwardX
+
+    if CONFIG.DEBUG then
+        print(string.format("[SuperSprayPaintMod] Using fixed grid orientation with yaw: %.1f degrees", yaw))
+        print(string.format("[SuperSprayPaintMod] Forward vector - X: %.2f, Y: %.2f", forwardX, forwardY))
+        print(string.format("[SuperSprayPaintMod] Right vector - X: %.2f, Y: %.2f", rightX, rightY))
+    end
 
     -- Grid configuration - using values from CONFIG
     local horizontalSpacing = CONFIG.HORIZONTAL_SPACING  -- Space between columns (left to right)
@@ -247,10 +255,9 @@ function SpawnAllPaintBombs()
         local row = i - 1
         local offsetY = row * depthSpacing
 
-        -- Debug output for vectors
+        -- Debug output for grid layout
         if CONFIG.DEBUG and i == 1 then
-            print(string.format("[SuperSprayPaintMod] Forward - X: %.2f, Y: %.2f", forwardX, forwardY))
-            print(string.format("[SuperSprayPaintMod] Right - X: %.2f, Y: %.2f", rightX, rightY))
+            print(string.format("[SuperSprayPaintMod] Grid layout - Row %d, Color: %s", i, color.name))
         end
 
         -- Spawn 4 matte versions (left side of the row)
@@ -262,8 +269,13 @@ function SpawnAllPaintBombs()
             local centerOffset = 1.5 * horizontalSpacing
 
             -- Position for matte cans (left side)
-            local matteX = location.X + (forwardX * forwardDistance) + (rightX * (-centerOffset + offsetMultiplier))
-            local matteY = location.Y + (forwardY * forwardDistance) + (rightY * (-centerOffset + offsetMultiplier)) + (forwardY * offsetY)
+            -- Calculate position in a way that ensures the grid is always perpendicular to the player's facing direction
+            local horizontalOffset = -centerOffset + offsetMultiplier
+            local depthOffset = offsetY
+
+            -- Apply the rotation matrix to transform the grid to face the player's direction
+            local matteX = location.X + (forwardX * forwardDistance) + (rightX * horizontalOffset) + (forwardX * depthOffset)
+            local matteY = location.Y + (forwardY * forwardDistance) + (rightY * horizontalOffset) + (forwardY * depthOffset)
             local matteZ = baseHeight
 
             -- Debug output for first can
@@ -301,8 +313,13 @@ function SpawnAllPaintBombs()
             local centerOffset = 1.5 * horizontalSpacing
 
             -- Position for metallic cans (right side)
-            local metallicX = location.X + (forwardX * forwardDistance) + (rightX * (horizontalSpacing - centerOffset + offsetMultiplier))
-            local metallicY = location.Y + (forwardY * forwardDistance) + (rightY * (horizontalSpacing - centerOffset + offsetMultiplier)) + (forwardY * offsetY)
+            -- Calculate position in a way that ensures the grid is always perpendicular to the player's facing direction
+            local horizontalOffset = horizontalSpacing - centerOffset + offsetMultiplier
+            local depthOffset = offsetY
+
+            -- Apply the rotation matrix to transform the grid to face the player's direction
+            local metallicX = location.X + (forwardX * forwardDistance) + (rightX * horizontalOffset) + (forwardX * depthOffset)
+            local metallicY = location.Y + (forwardY * forwardDistance) + (rightY * horizontalOffset) + (forwardY * depthOffset)
             local metallicZ = baseHeight
 
             -- Debug output for first metallic can
