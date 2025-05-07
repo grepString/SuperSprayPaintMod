@@ -1,19 +1,4 @@
 -- SuperSprayPaintMod for Drive Beyond Horizons
--- Main script file
---
--- This mod spawns paint bombs with various colors and finishes.
--- Each color has 4 matte and 4 metallic cans.
--- Press F5 to spawn all paint bombs in a grid in front of your character.
---
--- Updated to properly set both matte and metallic properties:
--- - Matte cans have Metallic=0.0 and CustomMetallic=0.0
--- - Metallic cans have Metallic=1.0 and CustomMetallic=1.0
--- - Both types use UseCustomColor=true to ensure custom settings take effect
---
--- Added calls to force visual updates:
--- - Calls OnRep_Color and OnRep_Metallic functions to trigger visual updates
--- - This ensures the paint cans display the correct color immediately
--- - Without these calls, the cans would only update visually after a game reload
 
 print("[SuperSprayPaintMod] Mod loaded")
 
@@ -223,8 +208,6 @@ function SpawnAllPaintBombs()
     end
 
     -- Calculate forward and right vectors based ONLY on Yaw (horizontal rotation)
-    -- This is the key to making the grid spawn consistently regardless of where the player is looking
-    -- By ignoring Pitch (looking up/down), we ensure the grid is always perpendicular to the player's facing direction
     local yaw = pawnRotation.Yaw or 0
     local yawRadians = yaw * (3.14159 / 180.0)
 
