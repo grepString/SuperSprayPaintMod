@@ -6,10 +6,9 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ## Features
 
-- Spawn paint cans with various colors and sheen types
-- Simple one-key operation (F5)
-- Organized grid layout for easy selection
 - Spawns 4 matte and 4 metallic versions of each color
+- Organized grid layout for easy selection
+- Simple one-key operation (F5)
 
 ## Usage
 
