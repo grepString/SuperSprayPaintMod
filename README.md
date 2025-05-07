@@ -72,7 +72,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ## Known Issues
 
-- The game saves normally, but if you try to exit via the in-game menu, the game will crash. While it *is* annoying, it's relatively harmless.
+- The game saves normally, but if you try to exit via the in-game menu after spawning cans at least once, the game will crash. While it *is* annoying, it's relatively harmless.
 
 ## Troubleshooting
 
