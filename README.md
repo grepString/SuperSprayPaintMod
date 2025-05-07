@@ -50,6 +50,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
      - This bypasses the need to edit mods.txt/mods.json
      - To disable and use the next method, simply delete this file.
    - **Method 2**: Add the mod to your `mods.txt` and/or `mods.json` file in the UE4SS Mods directory:
+
    mods.txt:
      ```
      SuperSprayPaintMod : 1
