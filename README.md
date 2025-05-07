@@ -43,9 +43,13 @@ This mod allows you to spawn paint cans with various colors and finishes.
 ## Installation
 
 1. Make sure you have UE4SS installed for Drive Beyond Horizons ([latest version](https://github.com/UE4SS-RE/RE-UE4SS))
-   `C:\Program Files (x86)\Steam\steamapps\common\Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
+   
+`C:\Program Files (x86)\Steam\steamapps\common\Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
+
 2. Place the SuperSprayPaintMod folder in your game's mods directory:
-   `C:\Program Files (x86)\Steam\steamapps\common\Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
+   
+`C:\Program Files (x86)\Steam\steamapps\common\Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
+
 3. By default this mod will be enabled via enabled.txt in the mods folder. You can drop the mod in and and launch the game.
 
    There are two ways to enable/disable the mod:
