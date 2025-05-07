@@ -35,7 +35,7 @@ local Colors = {
     { name = "Black", color = { R = 0, G = 0, B = 0, A = 1 } },
     { name = "White", color = { R = 1, G = 1, B = 1, A = 1 } },
     { name = "Gold", color = { R = 1, G = 0.84, B = 0, A = 1 } },
-    { name = "Silver", color = { R = 0.75, G = 0.75, B = 0.75, A = 1 } }
+    { name = "Silver", color = { R = 0.45, G = 0.45, B = 0.5, A = 1 } }
 }
 
 local SheenTypes = {
@@ -152,7 +152,7 @@ local function SetPaintBombProperties(paintBomb, color, isMetallic)
     end)
 end
 
--- Function to spawn all paint bombs
+
 function SpawnAllPaintBombs()
     print("[SuperSprayPaintMod] Spawning all paint cans")
 
@@ -352,7 +352,6 @@ function SpawnAllPaintBombs()
     print("[SuperSprayPaintMod] All paint cans spawned - 4 of each color and sheen type (matte and metallic)")
 end
 
--- Register keybind for F5 to spawn all paint bombs
 RegisterKeyBind(Key.F5, function()
     print("[SuperSprayPaintMod] F5 key detected, spawning paint cans")
     SpawnAllPaintBombs()
