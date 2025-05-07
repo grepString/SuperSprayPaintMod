@@ -39,6 +39,10 @@ This mod allows you to spawn paint cans with various colors and finishes.
 - Matte - Flat, non-reflective finish
 - Metallic - Shiny metallic finish
 
+## Tutorial Video
+
+[![How to Install UE4SS + Mod | Drive Beyond Horizons](https://img.youtube.com/vi/pWbKwe9b0e0/0.jpg)](https://www.youtube.com/watch?v=pWbKwe9b0e0)
+
 ## Installation
 
 1. Make sure you have the `experimental-latest` version of UE4SS installed into your Drive Beyond Horizons directory. [Download](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
