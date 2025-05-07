@@ -81,7 +81,7 @@ If you encounter issues:
 1. Check the UE4SS console for error messages
 2. Make sure the mod is properly installed and enabled (either with enabled.txt or in mods.txt/mods.json)
 3. If paint cans spawn in weird positions:
-   - Make sure you're standing on relatively flat ground. Gas Stations and Stores have the best flat ground.
+   - Make sure you're standing on relatively flat ground. Gas Stations and Repair Shops have the best flat ground.
 
 ## TODO
 
