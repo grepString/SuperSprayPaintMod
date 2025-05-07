@@ -82,6 +82,7 @@ If you encounter issues:
 ## TODO
 
 - Add more colors and finishes (maybe even custom colors)
+- Add method to clear spawned cans in an area relative to the player
 
 ## Credits
 
