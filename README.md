@@ -2,23 +2,23 @@
 
 This mod allows you to spawn paint cans with various colors and finishes.
 
-<img src="screenshot.jpg" alt="Screenshot" width="600">
+<img src="screenshot.gif" alt="Screenshot" width="600">
 
 ## Features
 
-- Spawns 4 matte and 4 metallic versions of each color
-- Organized grid layout for easy selection
-- Simple one-key operation (F5)
+- Spawn a single paint can with a keybind
+- Cycle through 11 different colors
+- Toggle between matte and metallic sheen
+- Near infinite spray amount
 
 ## Usage
 
 ### Controls
 
-1. Face the direction where you want the paint cans to appear
-2. Press `F5` to instantly spawn all paint cans in a grid in front of your character
-3. Each color will have two variants:
-   - Matte finish (white cans)
-   - Metallic finish (black cans)
+- **F5**: Spawn a paint can in front of the player
+- **[** (Left Bracket): Cycle to the previous color
+- **]** (Right Bracket): Cycle to the next color
+- **\\** (Backslash): Toggle between matte and metallic sheen
 
 ### Available Colors
 
@@ -44,6 +44,8 @@ This mod allows you to spawn paint cans with various colors and finishes.
 [![How to Install UE4SS + Mod | Drive Beyond Horizons](https://img.youtube.com/vi/pWbKwe9b0e0/0.jpg)](https://www.youtube.com/watch?v=pWbKwe9b0e0)
 
 ## Installation
+
+Note: If you're installing an updated version of this mod, just overwrite the existing files.
 
 1. Make sure you have the most recent `experimental-latest` version of UE4SS installed into your Drive Beyond Horizons directory. [Download](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
    
@@ -76,6 +78,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ## Known Issues
 
+- Placing the spawned can into a hotbar slot overwrites the modded can. Just spawn a new one to get around this. It will store on the rack or in a vehicle just fine.
 - The game saves normally, but if you try to exit via the in-game menu after spawning cans at least once, the game will crash. While it *is* annoying, it's relatively harmless.
 
 ## Troubleshooting
