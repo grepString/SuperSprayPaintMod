@@ -39,9 +39,13 @@ This mod allows you to spawn paint cans with various colors and finishes.
 - Matte - Flat, non-reflective finish
 - Metallic - Shiny metallic finish
 
+## Tutorial Video
+
+[![How to Install UE4SS + Mod | Drive Beyond Horizons](https://img.youtube.com/vi/pWbKwe9b0e0/0.jpg)](https://www.youtube.com/watch?v=pWbKwe9b0e0)
+
 ## Installation
 
-1. Make sure you have the latest version of UE4SS installed for Drive Beyond Horizons ([Download](https://github.com/UE4SS-RE/RE-UE4SS))
+1. Make sure you have the most recent `experimental-latest` version of UE4SS installed into your Drive Beyond Horizons directory. [Download](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
    
 `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
 
@@ -70,18 +74,22 @@ This mod allows you to spawn paint cans with various colors and finishes.
 4. Launch the game and load into a map
 5. Press F5 in-game to spawn the paint cans
 
+## Known Issues
+
+- The game saves normally, but if you try to exit via the in-game menu after spawning cans at least once, the game will crash. While it *is* annoying, it's relatively harmless.
+
 ## Troubleshooting
 
 If you encounter issues:
 
-1. Check the UE4SS console for error messages
+1. Check the UE4SS console for error messages (requires zDEV-UE4SS install)
 2. Make sure the mod is properly installed and enabled (either with enabled.txt or in mods.txt/mods.json)
 3. If paint cans spawn in weird positions:
-   - Make sure you're standing on relatively flat ground. Gas Stations and Stores have the best flat ground.
+   - Make sure you're standing on relatively flat ground. Gas Stations and Repair Shops have the best flat ground.
 
 ## TODO
 
-- Add more colors and finishes (maybe even custom colors)
+- Add more colors and finishes
 - Increase paint amount per can
 - Add method to clear spawned cans in an area relative to the player
 
