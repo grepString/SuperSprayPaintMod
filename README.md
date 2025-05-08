@@ -45,6 +45,8 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ## Installation
 
+Note: If you're installing an updated version of this mod, just overwrite the existing files.
+
 1. Make sure you have the most recent `experimental-latest` version of UE4SS installed into your Drive Beyond Horizons directory. [Download](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
    
 `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
