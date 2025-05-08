@@ -2,7 +2,7 @@
 
 This mod allows you to spawn paint cans with various colors and finishes.
 
-<img src="screenshot.jpg" alt="Screenshot" width="600">
+<img src="screenshot.gif" alt="Screenshot" width="600">
 
 ## Features
 
@@ -14,11 +14,10 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Controls
 
-1. Face the direction where you want the paint cans to appear
-2. Press `F5` to instantly spawn all paint cans in a grid in front of your character
-3. Each color will have two variants:
-   - Matte finish (white cans)
-   - Metallic finish (black cans)
+- **F5**: Spawn a paint can in front of the player
+- **[** (Left Bracket): Cycle to the previous color
+- **]** (Right Bracket): Cycle to the next color
+- **\\** (Backslash): Toggle between matte and metallic sheen
 
 ### Available Colors
 
