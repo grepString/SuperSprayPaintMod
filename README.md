@@ -78,6 +78,7 @@ Note: If you're installing an updated version of this mod, just overwrite the ex
 
 ## Known Issues
 
+- Placing the spawned can into a hotbar slot overwrites the modded can. Just spawn a new one to get around this. It will store on the rack or in a vehicle just fine.
 - The game saves normally, but if you try to exit via the in-game menu after spawning cans at least once, the game will crash. While it *is* annoying, it's relatively harmless.
 
 ## Troubleshooting
