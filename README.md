@@ -93,7 +93,7 @@ If you encounter issues:
 ## TODO
 
 - Add more colors and finishes
-- Increase paint amount per can
+- --Increase paint amount per can-- Completed
 - Add method to clear spawned cans in an area relative to the player
 
 ## Credits
