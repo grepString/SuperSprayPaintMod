@@ -76,6 +76,15 @@ Note: If you're installing an updated version of this mod, just overwrite the ex
 4. Launch the game and load into a map
 5. Press F5 in-game to spawn the paint cans
 
+## Multiplayer
+
+Note: This mod works best in single player.
+
+- All players should have the mod installed
+- Host-spawned cans have priority when applying paint
+- Host can spawn cans of set colors for friends to use
+- Friends of Host cannot change colors of host-spawned cans
+
 ## Known Issues
 
 - Placing the spawned can into a hotbar slot overwrites the modded can. Just spawn a new one to get around this. It will store on the rack or in a vehicle just fine.
