@@ -36,8 +36,8 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Available Sheen Types
 
-- Matte - Flat, non-reflective finish
-- Metallic - Shiny metallic finish
+- Matte
+- Metallic
 
 ## Tutorial Video
 
