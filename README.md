@@ -15,10 +15,10 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Controls
 
-- **F5**: Spawn a paint can in front of the player
-- **[** (Left Bracket): Cycle to the previous color
-- **]** (Right Bracket): Cycle to the next color
-- **\\** (Backslash): Toggle between matte and metallic sheen
+- `F5` Spawn a paint can in front of the player
+- `[` (Left Bracket): Cycle to the previous color
+- `]` (Right Bracket): Cycle to the next color
+- `\` (Backslash): Toggle between matte and metallic sheen
 
 ### Available Colors
 
@@ -36,8 +36,8 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Available Sheen Types
 
-- Matte - Flat, non-reflective finish
-- Metallic - Shiny metallic finish
+- Matte
+- Metallic
 
 ## Tutorial Video
 
@@ -76,6 +76,15 @@ Note: If you're installing an updated version of this mod, just overwrite the ex
 4. Launch the game and load into a map
 5. Press F5 in-game to spawn the paint cans
 
+## Multiplayer
+
+Note: This mod works best in single player.
+
+- All players should have the mod installed
+- Host-spawned cans have priority when applying paint
+- Host can spawn cans of set colors for friends to use
+- Friends of Host cannot change colors of host-spawned cans
+
 ## Known Issues
 
 - Placing the spawned can into a hotbar slot overwrites the modded can. Just spawn a new one to get around this. It will store on the rack or in a vehicle just fine.
@@ -93,7 +102,7 @@ If you encounter issues:
 ## TODO
 
 - Add more colors and finishes
-- --Increase paint amount per can-- Completed
+- ~~Increase paint amount per can~~ Completed
 - Add method to clear spawned cans in an area relative to the player
 
 ## Credits
