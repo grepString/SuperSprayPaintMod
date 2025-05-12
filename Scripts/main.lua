@@ -10,7 +10,7 @@ local CONFIG = {
 }
 
 -- https://teamcolorcodes.com/
--- Use the included RGB-to-Lua converter to add more colors
+-- Use the included rgb_converter.html to add more colors
 
 local Colors = {
     { name = "Blue", color = { R = 0, G = 0, B = 1, A = 1 } },
