@@ -2,13 +2,15 @@
 
 print("[SuperSprayPaintMod] Mod loaded")
 
--- Config and colors
 local CONFIG = {
     GROUND_OFFSET = 80,
     FORWARD_DISTANCE = 150,
     GROUND_CLEARANCE = 20,
     INFINITE_QUANTITY = 999999
 }
+
+-- https://teamcolorcodes.com/
+-- Use the included RGB-to-Lua converter to add more colors
 
 local Colors = {
     { name = "Blue", color = { R = 0, G = 0, B = 1, A = 1 } },
@@ -21,10 +23,57 @@ local Colors = {
     { name = "Black", color = { R = 0, G = 0, B = 0, A = 1 } },
     { name = "White", color = { R = 1, G = 1, B = 1, A = 1 } },
     { name = "Gold", color = { R = 1, G = 0.84, B = 0, A = 1 } },
-    { name = "Silver", color = { R = 0.45, G = 0.45, B = 0.5, A = 1 } }
+    { name = "Silver", color = { R = 0.45, G = 0.45, B = 0.5, A = 1 } },
+    { name = "Cyan", color = { R = 0.298, G = 0.792, B = 0.784, A = 1 } },
+    { name = "Alfa Romeo Maroon", color = { R = 0.643, G = 0.129, B = 0.204, A = 1 } },
+    { name = "Alpine Dark Blue", color = { R = 0.008, G = 0.098, B = 0.169, A = 1 } },
+    { name = "Aston Martin Dark Green", color = { R = 0, G = 0.141, B = 0.125, A = 1 } },
+    { name = "Aston Martin Tiffany Green", color = { R = 0.012, G = 0.478, B = 0.408, A = 1 } },
+    { name = "Caterham Green", color = { R = 0, G = 0.314, B = 0.188, A = 1 } },
+    { name = "Équipe Ligier Dark Blue", color = { R = 0.075, G = 0.141, B = 0.318, A = 1 } },
+    { name = "Force India Orange", color = { R = 0.949, G = 0.471, B = 0.212, A = 1 } },
+    { name = "Forti Corse Warm Gray", color = { R = 0.561, G = 0.486, B = 0.518, A = 1 } },
+    { name = "Haas Red", color = { R = 0.902, G = 0, B = 0.169, A = 1 } },
+    { name = "HRT Khaki", color = { R = 0.651, G = 0.565, B = 0.31, A = 1 } },
+    { name = "Manor Racing Blue", color = { R = 0, G = 0.427, B = 0.757, A = 1 } },
+    { name = "Red Bull Racing Silver", color = { R = 0.753, G = 0.749, B = 0.749, A = 1 } },
+    { name = "Sauber Red", color = { R = 0.871, G = 0.192, B = 0.149, A = 1 } },
+    { name = "Scuderia AlphaTauri Dark Blue", color = { R = 0.125, G = 0.224, B = 0.298, A = 1 } },
+    { name = "Scuderia Ferrari Yellow", color = { R = 1, G = 0.949, B = 0, A = 1 } },
+    { name = "Scuderia Toro Rosso Red", color = { R = 1, G = 0.027, B = 0.259, A = 1 } },
+    { name = "Simtek Medium Slate Blue", color = { R = 0.455, G = 0.529, B = 0.827, A = 1 } },
+    { name = "Team Lotus Peach Puff", color = { R = 0.714, G = 0.6, B = 0.357, A = 1 } },
+    { name = "Team Lotus Orange", color = { R = 0.984, G = 0.667, B = 0.118, A = 1 } },
+    { name = "Team Penske Red", color = { R = 0.812, G = 0.063, B = 0.176, A = 1 } },
+    { name = "Toleman Blue", color = { R = 0.016, G = 0.008, B = 0.769, A = 1 } },
+    { name = "Williams Racing Sky Blue", color = { R = 0, G = 0.627, B = 0.871, A = 1 } }
 }
 
 local currentColorIndex, isMetallic, currentPaintBomb = 1, false, nil
+
+-- Display a message
+local function ShowInGameChatMessage(message)
+    local formattedMessage = "[SSPM] " .. message
+
+    print("[SuperSprayPaintMod] " .. message)
+
+    -- Send a chat message using the ChatStruct
+    local pc = FindFirstOf("PlayerController")
+    if not pc or not pc:IsValid() then return end
+
+    pcall(function()
+        -- Create a chat struct
+        local chatStruct = {}
+        chatStruct.Time_8_DF6F279248745BE38C2E40835DE88631 = 0
+        chatStruct.User_6_4A6B517E45F066403FD3C4B4AA7C0FA3 = "SuperSprayPaintMod"
+        chatStruct.Mesage_7_79981D7A424DFD8E6876D888E700B202 = formattedMessage
+        chatStruct.IsInfoMessage_10_CD41743F409EA1DC4DD22CAC94591338 = true
+
+        if pc.ServerSendChatMessage then
+            pc:ServerSendChatMessage(chatStruct)
+        end
+    end)
+end
 
 -- Check if a property exists
 local function HasProperty(obj, propName)
@@ -39,13 +88,10 @@ local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
 
     local color = colorData.color
 
-    -- Set color property
     paintBomb.Color = color
 
-    -- Set metallic property
     paintBomb.Metallic = isMetallic and 1.0 or 0.0
 
-    -- Set quantity for infinite spray
     paintBomb.Quantity = CONFIG.INFINITE_QUANTITY
     paintBomb.MinQuantity = 0
     paintBomb.MaxQuantity = CONFIG.INFINITE_QUANTITY
@@ -117,8 +163,13 @@ function SpawnPaintCan()
     if success and result then
         currentPaintBomb = result
         SetPaintBombProperties(currentPaintBomb, Colors[currentColorIndex], isMetallic)
-        print(string.format("[SuperSprayPaintMod] Spawned %s %s paint",
-            Colors[currentColorIndex].name, isMetallic and "metallic" or "matte"))
+
+        local colorName = Colors[currentColorIndex].name
+        local sheenType = isMetallic and "Metallic" or "Matte"
+        local message = string.format("Spawned %s %s paint", colorName, sheenType)
+
+        print("[SuperSprayPaintMod] " .. message)
+        ShowInGameChatMessage(message)
     else
         print("[SuperSprayPaintMod] Error: Failed to spawn paint can")
     end
@@ -136,13 +187,25 @@ function CycleColor(direction)
     currentColorIndex = currentColorIndex + direction
     if currentColorIndex > #Colors then currentColorIndex = 1 end
     if currentColorIndex < 1 then currentColorIndex = #Colors end
-    print("[SuperSprayPaintMod] Color: " .. Colors[currentColorIndex].name)
+
+    local colorName = Colors[currentColorIndex].name
+    local sheenType = isMetallic and "Metallic" or "Matte"
+    local message = string.format("Color: %s (%s)", colorName, sheenType)
+
+    print("[SuperSprayPaintMod] " .. message)
+    ShowInGameChatMessage(message)
     UpdatePaintCan()
 end
 
 function ToggleSheen()
     isMetallic = not isMetallic
-    print("[SuperSprayPaintMod] Sheen: " .. (isMetallic and "Metallic" or "Matte"))
+
+    local colorName = Colors[currentColorIndex].name
+    local sheenType = isMetallic and "Metallic" or "Matte"
+    local message = string.format("Color: %s (%s)", colorName, sheenType)
+
+    print("[SuperSprayPaintMod] " .. message)
+    ShowInGameChatMessage(message)
     UpdatePaintCan()
 end
 
@@ -155,3 +218,4 @@ RegisterKeyBind(Key.OEM_FIVE, function() ToggleSheen(); return false end)   -- \
 print("[SuperSprayPaintMod] Controls: F5 to spawn a paint can")
 print("[SuperSprayPaintMod] Controls: [ or ] to cycle colors")
 print("[SuperSprayPaintMod] Controls: \\ to toggle metallic/matte sheen")
+print("[SuperSprayPaintMod] Current color will be displayed in the in-game chat when cycling colors or spawning paint")

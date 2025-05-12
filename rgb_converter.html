@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB to LUA Color Converter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        .color-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .input-column {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-column label {
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        .result {
+            background-color: #f7f7f7;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            word-break: normal;
+            white-space: nowrap;
+            overflow-x: auto;
+            margin-top: 8px;
+        }
+        #copyButton {
+            transition: background-color 0.2s;
+        }
+        #copyButton:hover {
+            background-color: #4338ca;
+        }
+        #copyButton:active {
+            background-color: #3730a3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RGB to LUA Color Converter</h1>
+        
+        <div id="colorPreview" class="color-preview"></div>
+        
+        <div class="form-group">
+            <label for="colorName">Color Name:</label>
+            <input type="text" id="colorName" value="Aston Green">
+        </div>
+        
+        <div class="input-grid">
+            <div class="input-column">
+                <label for="rValue">R (0-255):</label>
+                <input type="number" id="rValue" min="0" max="255" value="0">
+            </div>
+            <div class="input-column">
+                <label for="gValue">G (0-255):</label>
+                <input type="number" id="gValue" min="0" max="255" value="36">
+            </div>
+            <div class="input-column">
+                <label for="bValue">B (0-255):</label>
+                <input type="number" id="bValue" min="0" max="255" value="32">
+            </div>
+            <div class="input-column">
+                <label for="aValue">Alpha (0-1):</label>
+                <input type="number" id="aValue" min="0" max="1" step="0.1" value="1">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>LUA Format:</label>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div id="luaResult" class="result" style="flex-grow: 1;"></div>
+                <button id="copyButton" style="padding: 8px 16px; background-color: #4f46e5; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Copy</button>
+            </div>
+            <div id="copyMessage" style="color: #10b981; font-size: 14px; margin-top: 6px; height: 14px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const colorNameInput = document.getElementById('colorName');
+        const rInput = document.getElementById('rValue');
+        const gInput = document.getElementById('gValue');
+        const bInput = document.getElementById('bValue');
+        const aInput = document.getElementById('aValue');
+        const colorPreview = document.getElementById('colorPreview');
+        const luaResult = document.getElementById('luaResult');
+        const copyButton = document.getElementById('copyButton');
+        const copyMessage = document.getElementById('copyMessage');
+        
+        let currentLuaString = '';
+        
+        function updateResult() {
+            const colorName = colorNameInput.value;
+            const r = Math.min(255, Math.max(0, parseInt(rInput.value) || 0));
+            const g = Math.min(255, Math.max(0, parseInt(gInput.value) || 0));
+            const b = Math.min(255, Math.max(0, parseInt(bInput.value) || 0));
+            const a = Math.min(1, Math.max(0, parseFloat(aInput.value) || 0));
+            
+            rInput.value = r;
+            gInput.value = g;
+            bInput.value = b;
+            aInput.value = a;
+            
+            colorPreview.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+            
+            const rLua = (r / 255).toFixed(3);
+            const gLua = (g / 255).toFixed(3);
+            const bLua = (b / 255).toFixed(3);
+            
+            currentLuaString = `{ name = "${colorName}", color = { R = ${parseFloat(rLua)}, G = ${parseFloat(gLua)}, B = ${parseFloat(bLua)}, A = ${a} } }`;
+            luaResult.textContent = currentLuaString;
+        }
+        
+        function copyToClipboard() {
+            navigator.clipboard.writeText(currentLuaString).then(() => {
+                copyMessage.textContent = "Copied to clipboard!";
+                setTimeout(() => {
+                    copyMessage.textContent = "";
+                }, 2000);
+            }).catch(err => {
+                copyMessage.textContent = "Failed to copy. Please try again.";
+                console.error('Failed to copy: ', err);
+            });
+        }
+        
+        colorNameInput.addEventListener('input', updateResult);
+        rInput.addEventListener('input', updateResult);
+        gInput.addEventListener('input', updateResult);
+        bInput.addEventListener('input', updateResult);
+        aInput.addEventListener('input', updateResult);
+        copyButton.addEventListener('click', copyToClipboard);
+        
+        updateResult();
+    </script>
+</body>
+</html>
