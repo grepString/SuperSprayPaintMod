@@ -22,7 +22,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Available Colors
 
-Note: If you feel comfortable, you can use the included rgb_converter.html to add your own colors.
+Note: If you feel comfortable, you can use the included `rgb_converter.html` to add your own colors.
 
 Basic
 - Blue
