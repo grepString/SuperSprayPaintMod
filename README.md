@@ -22,6 +22,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
 
 ### Available Colors
 
+Basic
 - Blue
 - Red
 - Green
@@ -33,6 +34,32 @@ This mod allows you to spawn paint cans with various colors and finishes.
 - White
 - Gold
 - Silver
+
+F1 Racing Teams
+- Alfa Romeo Maroon
+- Alpine Dark Blue
+- Aston Martin Dark Green
+- Aston Martin Tiffany Green
+- Caterham Green
+- Équipe Ligier Dark Blue
+- Force India Orange
+- Forti Corse Warm Gray
+- Haas Red
+- HRT Khaki
+- Manor Racing Blue
+- Red Bull Racing Silver
+- Sauber Red
+- Scuderia AlphaTauri Dark Blue
+- Scuderia Ferrari Yellow
+- Scuderia Toro Rosso Red
+- Simtek Medium Slate Blue
+- Team Lotus Peach Puff
+- Team Lotus Orange
+- Team Penske Red
+- Toleman Blue
+- Williams Racing Sky Blue
+
+
 
 ### Available Sheen Types
 
