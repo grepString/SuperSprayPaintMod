@@ -136,9 +136,9 @@ If you encounter issues:
 
 ## TODO
 
-- Add more colors and finishes
+- ~~Add more colors~~ Completed
 - ~~Increase paint amount per can~~ Completed
-- Add method to clear spawned cans in an area relative to the player
+- ~~Add more useful tools~~ Completed
 
 ## Credits
 
