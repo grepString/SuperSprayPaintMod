@@ -9,13 +9,19 @@ This mod allows you to spawn paint cans with various colors and finishes.
 - Spawn a single paint can with a keybind
 - Cycle through 11 different colors
 - Toggle between matte and metallic sheen
-- Near infinite spray amount
+- Near infinite usage
+
+Now includes:
+- Infinite Rust Brush
+- Infinite Polish Sponge
 
 ## Usage
 
 ### Controls
 
-- `F5` Spawn a paint can in front of the player
+- `F5` Spawn a paint can
+- `F6` Spawn a rust brush
+- `F7` Spawn a polish sponge
 - `[` (Left Bracket): Cycle to the previous color
 - `]` (Right Bracket): Cycle to the next color
 - `\` (Backslash): Toggle between matte and metallic sheen
