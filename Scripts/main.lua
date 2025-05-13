@@ -9,6 +9,13 @@ local CONFIG = {
     INFINITE_QUANTITY = 999999
 }
 
+-- Tools
+local TOOL_PATHS = {
+    PAINT_BOMB = "/Game/BP/Items/Movable/PaintBomb/PaintBomb.PaintBomb_C",
+    RUST_BRUSH = "/Game/BP/Items/Movable/Tools/RustBrush.RustBrush_C",
+    POLISH_BRUSH = "/Game/BP/Items/Movable/Tools/PolishBrush.PolishBrush_C"
+}
+
 -- https://teamcolorcodes.com/
 -- Use the included rgb_converter.html to add more colors
 
@@ -82,6 +89,20 @@ local function HasProperty(obj, propName)
     return success and result
 end
 
+-- Infinite tools
+local function SetInfiniteToolProperties(tool)
+    if not tool or not tool:IsValid() then return end
+
+    tool.Quantity = CONFIG.INFINITE_QUANTITY
+    tool.MinQuantity = 0
+    tool.MaxQuantity = CONFIG.INFINITE_QUANTITY
+
+    -- Call OnRep function to force visual update
+    pcall(function()
+        if HasProperty(tool, "OnRep_Quantity") then tool:OnRep_Quantity() end
+    end)
+end
+
 -- Set properties on a paint bomb
 local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
     if not paintBomb or not paintBomb:IsValid() then return end
@@ -92,9 +113,8 @@ local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
 
     paintBomb.Metallic = isMetallic and 1.0 or 0.0
 
-    paintBomb.Quantity = CONFIG.INFINITE_QUANTITY
-    paintBomb.MinQuantity = 0
-    paintBomb.MaxQuantity = CONFIG.INFINITE_QUANTITY
+    -- Set infinite usage
+    SetInfiniteToolProperties(paintBomb)
 
     if HasProperty(paintBomb, "ApplicationAmount") then
         paintBomb.ApplicationAmount = 1.0  -- Maximum application amount
@@ -128,20 +148,18 @@ local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
     pcall(function()
         if HasProperty(paintBomb, "OnRep_Color") then paintBomb:OnRep_Color() end
         if HasProperty(paintBomb, "OnRep_Metallic") then paintBomb:OnRep_Metallic() end
-        if HasProperty(paintBomb, "OnRep_Quantity") then paintBomb:OnRep_Quantity() end
     end)
 end
 
--- Spawn a paint can in front of the player
-function SpawnPaintCan()
+local function SpawnTool(toolPath, toolName, callback)
     local pc = FindFirstOf("PlayerController")
-    if not pc or not pc.Pawn then return end
+    if not pc or not pc.Pawn then return nil end
 
     local pawn = pc.Pawn
-    local paintBombClass = StaticFindObject("/Game/BP/Items/Movable/PaintBomb/PaintBomb.PaintBomb_C")
-    if not paintBombClass then
-        print("[SuperSprayPaintMod] Error: Could not find PaintBomb class")
-        return
+    local toolClass = StaticFindObject(toolPath)
+    if not toolClass then
+        print("[SuperSprayPaintMod] Error: Could not find " .. toolName .. " class")
+        return nil
     end
 
     -- Calculate spawn position
@@ -154,14 +172,27 @@ function SpawnPaintCan()
         Z = (location.Z - CONFIG.GROUND_OFFSET) + CONFIG.GROUND_CLEARANCE
     }
 
-    -- Spawn the paint bomb
+    -- Spawn the tool
     local world = pawn:GetWorld()
     local success, result = pcall(function()
-        return world:SpawnActor(paintBombClass, spawnPos, {Pitch=0, Yaw=yaw, Roll=0})
+        return world:SpawnActor(toolClass, spawnPos, {Pitch=0, Yaw=yaw, Roll=0})
     end)
 
     if success and result then
-        currentPaintBomb = result
+        if callback then
+            callback(result)
+        end
+        return result
+    else
+        print("[SuperSprayPaintMod] Error: Failed to spawn " .. toolName)
+        return nil
+    end
+end
+
+-- Spawn a paint can
+function SpawnPaintCan()
+    local result = SpawnTool(TOOL_PATHS.PAINT_BOMB, "PaintBomb", function(paintBomb)
+        currentPaintBomb = paintBomb
         SetPaintBombProperties(currentPaintBomb, Colors[currentColorIndex], isMetallic)
 
         local colorName = Colors[currentColorIndex].name
@@ -170,9 +201,7 @@ function SpawnPaintCan()
 
         print("[SuperSprayPaintMod] " .. message)
         ShowInGameChatMessage(message)
-    else
-        print("[SuperSprayPaintMod] Error: Failed to spawn paint can")
-    end
+    end)
 end
 
 -- Update paint can properties
@@ -209,13 +238,39 @@ function ToggleSheen()
     UpdatePaintCan()
 end
 
+-- Spawn a rust brush
+function SpawnRustBrush()
+    SpawnTool(TOOL_PATHS.RUST_BRUSH, "RustBrush", function(brush)
+        SetInfiniteToolProperties(brush)
+
+        local message = "Spawned Rust Brush with infinite usage"
+        print("[SuperSprayPaintMod] " .. message)
+        ShowInGameChatMessage(message)
+    end)
+end
+
+-- Spawn a polish sponge
+function SpawnPolishBrush()
+    SpawnTool(TOOL_PATHS.POLISH_BRUSH, "PolishBrush", function(brush)
+        SetInfiniteToolProperties(brush)
+
+        local message = "Spawned Polish Sponge with infinite usage"
+        print("[SuperSprayPaintMod] " .. message)
+        ShowInGameChatMessage(message)
+    end)
+end
+
 -- Register key bindings
 RegisterKeyBind(Key.F5, function() SpawnPaintCan(); return false end)
+RegisterKeyBind(Key.F6, function() SpawnRustBrush(); return false end)
+RegisterKeyBind(Key.F7, function() SpawnPolishBrush(); return false end)
 RegisterKeyBind(Key.OEM_FOUR, function() CycleColor(-1); return false end)  -- [
 RegisterKeyBind(Key.OEM_SIX, function() CycleColor(1); return false end)    -- ]
 RegisterKeyBind(Key.OEM_FIVE, function() ToggleSheen(); return false end)   -- \
 
-print("[SuperSprayPaintMod] Controls: F5 to spawn a paint can")
+print("[SuperSprayPaintMod] Controls: F5 to spawn a spray paint can")
+print("[SuperSprayPaintMod] Controls: F6 to spawn a rust brush")
+print("[SuperSprayPaintMod] Controls: F7 to spawn a polish sponge")
 print("[SuperSprayPaintMod] Controls: [ or ] to cycle colors")
 print("[SuperSprayPaintMod] Controls: \\ to toggle metallic/matte sheen")
 print("[SuperSprayPaintMod] Current color will be displayed in the in-game chat when cycling colors or spawning paint")
