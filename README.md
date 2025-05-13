@@ -109,7 +109,7 @@ Note: If you're installing an updated version of this mod, just overwrite the ex
      }
      ```
 4. Launch the game and load into a map
-5. Press F5 in-game to spawn the paint cans
+5. Press F5, F6, or F7 to spawn a tool of your choice
 
 ## Multiplayer
 
