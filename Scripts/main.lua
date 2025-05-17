@@ -54,6 +54,7 @@ local Colors = {
     { name = "Team Penske Red", color = { R = 0.812, G = 0.063, B = 0.176, A = 1 } },
     { name = "Toleman Blue", color = { R = 0.016, G = 0.008, B = 0.769, A = 1 } },
     { name = "Williams Racing Sky Blue", color = { R = 0, G = 0.627, B = 0.871, A = 1 } }
+    { name = "Green 4BO", color = { R = 0.404, G = 0.573, B = 0.404, A = 1 } }
 }
 
 local currentColorIndex, isMetallic, currentPaintBomb = 1, false, nil
