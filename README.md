@@ -7,7 +7,7 @@ This mod allows you to spawn paint cans with various colors and finishes.
 ## Features
 
 - Spawn a single paint can with a keybind
-- Cycle through 11 different colors
+- Cycle through all the different colors
 - Toggle between matte and metallic sheen
 - Near infinite usage
 
