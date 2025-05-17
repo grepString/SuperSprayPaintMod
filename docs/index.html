@@ -13,14 +13,16 @@
             --hover-color: #3d3d3d;
             --link-color: #5865F2;
             --header-color: #f0f0f0;
+            --code-bg: #2a2a2a;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1200px;
+            max-width: 1050px;
             margin: 0 auto;
             padding: 20px;
             background-color: var(--bg-color);
             color: var(--text-color);
+            line-height: 1.6;
         }
         nav {
             background-color: var(--card-bg);
@@ -36,6 +38,7 @@
             margin: 0 0.5rem;
             border-radius: 4px;
             transition: background-color 0.2s;
+            display: inline-block;
         }
         nav a:hover {
             background-color: var(--hover-color);
@@ -99,6 +102,39 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .color-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 10px;
+            }
+            .color-sample {
+                height: 120px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .color-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .color-info {
+                padding: 10px;
+            }
+            .color-name {
+                font-size: 14px;
+            }
+            .color-hex {
+                font-size: 12px;
+            }
+            nav a {
+                margin: 0 0.2rem;
+                padding: 0.5rem 0.7rem;
+            }
         }
     </style>
 </head>

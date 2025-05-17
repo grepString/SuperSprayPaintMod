@@ -38,6 +38,7 @@
             margin: 0 0.5rem;
             border-radius: 4px;
             transition: background-color 0.2s;
+            display: inline-block;
         }
         nav a:hover {
             background-color: var(--hover-color);
@@ -120,6 +121,57 @@
             padding: 15px;
             margin: 20px 0;
             border-radius: 4px;
+        }
+        
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .controls-grid {
+                gap: 10px;
+            }
+            .control-card {
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .controls-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            pre {
+                font-size: 13px;
+            }
+            .key {
+                min-width: 30px;
+                padding: 4px 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            h3 {
+                font-size: 18px;
+            }
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            nav a {
+                margin: 0 0.2rem;
+                padding: 0.5rem 0.7rem;
+            }
+            code, pre {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
