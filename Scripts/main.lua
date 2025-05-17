@@ -20,6 +20,7 @@ local TOOL_PATHS = {
 -- Use the included rgb_converter.html to add more colors
 
 local Colors = {
+    { name = "[Basic Colors]", color = { R = 0, G = 0, B = 0, A = 0 } },
     { name = "Blue", color = { R = 0, G = 0, B = 1, A = 1 } },
     { name = "Red", color = { R = 1, G = 0, B = 0, A = 1 } },
     { name = "Green", color = { R = 0, G = 1, B = 0, A = 1 } },
@@ -32,6 +33,7 @@ local Colors = {
     { name = "Gold", color = { R = 1, G = 0.84, B = 0, A = 1 } },
     { name = "Silver", color = { R = 0.45, G = 0.45, B = 0.5, A = 1 } },
     { name = "Cyan", color = { R = 0.298, G = 0.792, B = 0.784, A = 1 } },
+    { name = "[F1 Racing Team Colors]", color = { R = 0, G = 0, B = 0, A = 0 } },
     { name = "Alfa Romeo Maroon", color = { R = 0.643, G = 0.129, B = 0.204, A = 1 } },
     { name = "Alpine Dark Blue", color = { R = 0.008, G = 0.098, B = 0.169, A = 1 } },
     { name = "Aston Martin Dark Green", color = { R = 0, G = 0.141, B = 0.125, A = 1 } },
@@ -53,8 +55,29 @@ local Colors = {
     { name = "Team Lotus Orange", color = { R = 0.984, G = 0.667, B = 0.118, A = 1 } },
     { name = "Team Penske Red", color = { R = 0.812, G = 0.063, B = 0.176, A = 1 } },
     { name = "Toleman Blue", color = { R = 0.016, G = 0.008, B = 0.769, A = 1 } },
-    { name = "Williams Racing Sky Blue", color = { R = 0, G = 0.627, B = 0.871, A = 1 } }
-    { name = "Green 4BO", color = { R = 0.404, G = 0.573, B = 0.404, A = 1 } }
+    { name = "Williams Racing Sky Blue", color = { R = 0, G = 0.627, B = 0.871, A = 1 } },
+    { name = "[Vintage Military Colors]", color = { R = 0, G = 0, B = 0, A = 0 } },
+    { name = "Soviet 4BO Green", color = { R = 0.318, G = 0.396, B = 0.247, A = 1 } },
+    { name = "US Olive Drab", color = { R = 0.282, G = 0.353, B = 0.251, A = 1 } },
+    { name = "US Desert Sand", color = { R = 0.780, G = 0.706, B = 0.620, A = 1 } },
+    { name = "US Navy Blue‑Gray", color = { R = 0.290, G = 0.329, B = 0.380, A = 1 } },
+    { name = "US Intermediate Blue", color = { R = 0.439, G = 0.518, B = 0.596, A = 1 } },
+    { name = "German Panzergrau", color = { R = 0.290, G = 0.310, B = 0.333, A = 1 } },
+    { name = "German Dunkelgelb", color = { R = 0.690, G = 0.604, B = 0.420, A = 1 } },
+    { name = "German Olivgrün", color = { R = 0.420, G = 0.420, B = 0.278, A = 1 } },
+    { name = "German Rotbraun", color = { R = 0.416, G = 0.243, B = 0.208, A = 1 } },
+    { name = "Luftwaffe Grau", color = { R = 0.541, G = 0.541, B = 0.482, A = 1 } },
+    { name = "Luftwaffe Schwarzgrün", color = { R = 0.227, G = 0.251, B = 0.208, A = 1 } },
+    { name = "Luftwaffe Dunkelgrün", color = { R = 0.275, G = 0.290, B = 0.235, A = 1 } },
+    { name = "UK Khaki Green No.3", color = { R = 0.373, G = 0.361, B = 0.247, A = 1 } },
+    { name = "UK SCC No.2 Khaki Drab", color = { R = 0.482, G = 0.412, B = 0.318, A = 1 } },
+    { name = "UK SCC No.1A Dark Brown", color = { R = 0.302, G = 0.251, B = 0.212, A = 1 } },
+    { name = "UK SCC No.15 Olive Drab", color = { R = 0.369, G = 0.365, B = 0.278, A = 1 } },
+    { name = "RAF Dark Earth", color = { R = 0.475, G = 0.408, B = 0.329, A = 1 } },
+    { name = "RAF Dark Green", color = { R = 0.290, G = 0.329, B = 0.267, A = 1 } },
+    { name = "RAF Sky", color = { R = 0.635, G = 0.718, B = 0.659, A = 1 } },
+    { name = "NATO Green", color = { R = 0.294, G = 0.325, B = 0.220, A = 1 } },
+    { name = "NATO Gelboliv", color = { R = 0.325, G = 0.310, B = 0.235, A = 1 } }
 }
 
 local currentColorIndex, isMetallic, currentPaintBomb = 1, false, nil
