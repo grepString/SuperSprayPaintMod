@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSPM - How To</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --hover-color: #3d3d3d;
+            --link-color: #5865F2;
+            --header-color: #f0f0f0;
+            --code-bg: #2a2a2a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        nav {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        nav a:hover {
+            background-color: var(--hover-color);
+        }
+        nav a.active {
+            background-color: var(--hover-color);
+            font-weight: bold;
+        }
+        h1, h2, h3 {
+            color: var(--header-color);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .control-card {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+        .key {
+            background-color: var(--hover-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 15px;
+            font-family: monospace;
+            min-width: 40px;
+            text-align: center;
+        }
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: rgba(255, 0, 0, 0.1);
+            border-left: 4px solid #ff4444;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Colors</a>
+        <a href="how-to.html" class="active">How To</a>
+    </nav>
+
+    <h1>Installation & Usage Guide</h1>
+
+    <div class="section">
+        <h2>Controls</h2>
+        <div class="controls-grid">
+            <div class="control-card">
+                <div class="key">F5</div>
+                <div>Spawn a paint can</div>
+            </div>
+            <div class="control-card">
+                <div class="key">F6</div>
+                <div>Spawn a rust brush</div>
+            </div>
+            <div class="control-card">
+                <div class="key">F7</div>
+                <div>Spawn a polish sponge</div>
+            </div>
+            <div class="control-card">
+                <div class="key">[</div>
+                <div>Previous color</div>
+            </div>
+            <div class="control-card">
+                <div class="key">]</div>
+                <div>Next color</div>
+            </div>
+            <div class="control-card">
+                <div class="key">\</div>
+                <div>Toggle matte/metallic</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Installation Guide</h2>
+        
+        <h3>1. Install UE4SS</h3>
+        <ul>
+            <li>Download <strong>experimental-latest</strong> version of UE4SS from <a href="https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest" target="_blank">GitHub</a></li>
+            <li>Extract it to your game directory:<br>
+                <code>Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64</code>
+            </li>
+        </ul>
+
+        <h3>2. Install the Mod</h3>
+        <ul>
+            <li>Download the mod from <a href="https://github.com/grepString/SuperSprayPaintMod/releases/latest" target="_blank">GitHub</a></li>
+            <li>Place the SuperSprayPaintMod folder in:<br>
+                <code>Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\</code>
+            </li>
+        </ul>
+
+        <h3>3. Mod Configuration (Optional)</h3>
+        <p>The mod comes pre-enabled with an <code>enabled.txt</code> file. No additional setup is required.</p>
+        <p>If you prefer to manage mods through configuration files, you can:</p>
+        <ul>
+            <li>Delete the <code>enabled.txt</code> file and add the mod to your configuration:</li>
+            <pre>mods.txt:
+SuperSprayPaintMod : 1
+
+mods.json:
+{
+  "SuperSprayPaintMod": true
+}</pre>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Video Tutorial</h2>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/pWbKwe9b0e0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        <ul>
+            <li>Check the UE4SS console for error messages (requires zDEV-UE4SS install)</li>
+            <li>Verify the mod is properly enabled (either with enabled.txt or in mods.txt/mods.json)</li>
+            <li>For paint can spawn issues, ensure you're on flat ground (Gas Stations and Repair Shops work best)</li>
+        </ul>
+
+        <div class="warning">
+            <strong>Known Issues:</strong>
+            <ul>
+                <li>Placing spawned cans in hotbar slots will overwrite the modded can - simply spawn a new one</li>
+                <li>The game may crash when exiting via the in-game menu after spawning cans. While annoying, this is harmless and your progress will be saved</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Multiplayer Notes</h2>
+        <ul>
+            <li>All players should have the mod installed</li>
+            <li>Host-spawned cans have priority for paint application</li>
+            <li>Host can spawn preset color cans for other players</li>
+            <li>Non-host players cannot change colors of host-spawned cans</li>
+        </ul>
+    </div>
+</body>
+</html> 
