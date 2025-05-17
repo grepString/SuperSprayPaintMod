@@ -32,51 +32,7 @@ View existing colors and cleaner instructions:
 
 https://grepstring.github.io/SuperSprayPaintMod/
 
-Note: If you feel comfortable, you can use the included `rgb_converter.html` to add your own colors.
-
-Basic
-- Blue
-- Red
-- Green
-- Yellow
-- Orange
-- Purple
-- Pink
-- Black
-- White
-- Gold
-- Silver
-
-F1 Racing Teams
-- Alfa Romeo Maroon
-- Alpine Dark Blue
-- Aston Martin Dark Green
-- Aston Martin Tiffany Green
-- Caterham Green
-- Équipe Ligier Dark Blue
-- Force India Orange
-- Forti Corse Warm Gray
-- Haas Red
-- HRT Khaki
-- Manor Racing Blue
-- Red Bull Racing Silver
-- Sauber Red
-- Scuderia AlphaTauri Dark Blue
-- Scuderia Ferrari Yellow
-- Scuderia Toro Rosso Red
-- Simtek Medium Slate Blue
-- Team Lotus Peach Puff
-- Team Lotus Orange
-- Team Penske Red
-- Toleman Blue
-- Williams Racing Sky Blue
-
-Vintage Military Colors
-- Green 4BO
-
-
-
-### Available Sheen Types
+### Available Sheens
 
 - Matte
 - Metallic
@@ -85,38 +41,35 @@ Vintage Military Colors
 
 [![How to Install UE4SS + Mod | Drive Beyond Horizons](https://img.youtube.com/vi/pWbKwe9b0e0/0.jpg)](https://www.youtube.com/watch?v=pWbKwe9b0e0)
 
-## Installation
+## Installation Guide
 
 Note: If you're installing an updated version of this mod, just overwrite the existing files.
 
-1. Make sure you have the most recent `experimental-latest` version of UE4SS installed into your Drive Beyond Horizons directory. [Download](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
-   
-`Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
+### 1. Install UE4SS
+- Download **experimental-latest** version of UE4SS from [GitHub](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
+- Place the `ue4ss` folder in:  
+  `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
 
-2. Place the SuperSprayPaintMod folder in your game's mods directory:
-   
-`Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
+### 2. Install the Mod
+- Download the mod from [GitHub](https://github.com/grepString/SuperSprayPaintMod/releases/latest)
+- Place the `SuperSprayPaintMod` folder in:  
+  `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
 
-3. By default this mod will be enabled via enabled.txt in the mods folder. You can drop the mod in and and launch the game.
+### 3. Mod Configuration (Optional)
+The mod comes pre-enabled with an `enabled.txt` file. No additional setup is required.
 
-   There are two ways to enable/disable the mod:
-   - **Method 1 (default)**: Create an empty file named `enabled.txt` in the SuperSprayPaintMod folder
-     - This bypasses the need to edit mods.txt/mods.json
-     - To disable and use the next method, simply delete this file.
-   - **Method 2**: Add the mod to your `mods.txt` and/or `mods.json` file in the UE4SS Mods directory:
+If you prefer to manage mods through configuration files, you can:
+- Delete the `enabled.txt` file and add the mod to your configuration:
+```
+mods.txt:
+SuperSprayPaintMod : 1
 
-   mods.txt:
-     ```
-     SuperSprayPaintMod : 1
-     ```
-   mods.json:
-     ```json
-     {
-       "SuperSprayPaintMod": true
-     }
-     ```
-4. Launch the game and load into a map
-5. Press F5, F6, or F7 to spawn a tool of your choice
+mods.json:
+{
+  "SuperSprayPaintMod": true
+}
+```
+
 
 ## Multiplayer
 
