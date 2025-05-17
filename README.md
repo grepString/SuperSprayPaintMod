@@ -1,4 +1,4 @@
-# SuperSprayPaint Mod for Drive Beyond Horizons
+# SuperSprayPaintMod for Drive Beyond Horizons
 
 This mod allows you to spawn paint cans with various colors and finishes.
 
