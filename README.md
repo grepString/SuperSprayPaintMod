@@ -71,6 +71,9 @@ F1 Racing Teams
 - Toleman Blue
 - Williams Racing Sky Blue
 
+Vintage Military Colors
+- Green 4BO
+
 
 
 ### Available Sheen Types
