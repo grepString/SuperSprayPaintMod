@@ -28,6 +28,10 @@ Now includes:
 
 ### Available Colors
 
+View existing colors and cleaner instructions:
+
+https://grepstring.github.io/SuperSprayPaintMod/
+
 Note: If you feel comfortable, you can use the included `rgb_converter.html` to add your own colors.
 
 Basic
