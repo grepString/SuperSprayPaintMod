@@ -32,51 +32,7 @@ View existing colors and cleaner instructions:
 
 https://grepstring.github.io/SuperSprayPaintMod/
 
-Note: If you feel comfortable, you can use the included `rgb_converter.html` to add your own colors.
-
-Basic
-- Blue
-- Red
-- Green
-- Yellow
-- Orange
-- Purple
-- Pink
-- Black
-- White
-- Gold
-- Silver
-
-F1 Racing Teams
-- Alfa Romeo Maroon
-- Alpine Dark Blue
-- Aston Martin Dark Green
-- Aston Martin Tiffany Green
-- Caterham Green
-- Équipe Ligier Dark Blue
-- Force India Orange
-- Forti Corse Warm Gray
-- Haas Red
-- HRT Khaki
-- Manor Racing Blue
-- Red Bull Racing Silver
-- Sauber Red
-- Scuderia AlphaTauri Dark Blue
-- Scuderia Ferrari Yellow
-- Scuderia Toro Rosso Red
-- Simtek Medium Slate Blue
-- Team Lotus Peach Puff
-- Team Lotus Orange
-- Team Penske Red
-- Toleman Blue
-- Williams Racing Sky Blue
-
-Vintage Military Colors
-- Green 4BO
-
-
-
-### Available Sheen Types
+### Available Sheens
 
 - Matte
 - Metallic
