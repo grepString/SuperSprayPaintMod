@@ -105,5 +105,5 @@ If you encounter issues:
 Special thanks to the UE4SS and Drive Beyond Horizons team for making modding possible.
 
 ## License
-[SuperSprayPaintMod](https://github.com/grepString/SuperSprayPaintMod) © 2025 by [grepString](https://github.com/grepString) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[SuperSprayPaintMod](https://github.com/grepString/SuperSprayPaintMod) © 2025 by [grepString](https://github.com/grepString) is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
