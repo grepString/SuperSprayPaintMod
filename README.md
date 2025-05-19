@@ -103,3 +103,9 @@ If you encounter issues:
 ## Credits
 
 Special thanks to the UE4SS and Drive Beyond Horizons team for making modding possible.
+
+## License
+
+This mod is licensed under [GNU GPL v3](LICENSE).
+This prohibits commercial use of this mod. You are free to use and modify this mod for personal use,
+but you cannot sell it or incorporate it into commercial products.
