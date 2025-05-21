@@ -46,7 +46,7 @@ https://grepstring.github.io/SuperSprayPaintMod/
 Note: If you're installing an updated version of this mod, just overwrite the existing files.
 
 ### 1. Install UE4SS
-- Download **experimental-latest** version of UE4SS from [GitHub](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
+- Download the **experimental-latest** zDEV version of UE4SS from [GitHub](https://github.com/UE4SS-RE/RE-UE4SS/releases/tag/experimental-latest)
 - Place the `ue4ss` folder and `dwmapi.dll` in:  
   `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
 
