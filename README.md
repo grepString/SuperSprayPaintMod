@@ -51,7 +51,8 @@ Note: If you're installing an updated version of this mod, just overwrite the ex
   `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64`
 
 ### 2. Install the Mod
-- Download the mod from [GitHub](https://github.com/grepString/SuperSprayPaintMod/releases/latest)
+- Option 1: Download the mod from [GitHub](https://github.com/grepString/SuperSprayPaintMod/releases/latest)
+- Option 2: Download the mod from [Nexus Mods](https://www.nexusmods.com/drivebeyondhorizons/mods/2)
 - Place the `SuperSprayPaintMod` folder in:  
   `Drive Beyond Horizons\DriveBeyondHorizons\Binaries\Win64\ue4ss\Mods\`
 
