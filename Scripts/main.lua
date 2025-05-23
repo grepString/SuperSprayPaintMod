@@ -6,10 +6,10 @@ local CONFIG = {
     GROUND_OFFSET = 80,
     FORWARD_DISTANCE = 150,
     GROUND_CLEARANCE = 20,
-    INFINITE_QUANTITY = 999999
+    INFINITE_QUANTITY = 999999,
+    ENABLE_CHAT_MESSAGES = true
 }
 
--- Tools
 local TOOL_PATHS = {
     PAINT_BOMB = "/Game/BP/Items/Movable/PaintBomb/PaintBomb.PaintBomb_C",
     RUST_BRUSH = "/Game/BP/Items/Movable/Tools/RustBrush.RustBrush_C",
@@ -81,20 +81,21 @@ local Colors = {
     { name = "NATO Gelboliv", color = { R = 0.325, G = 0.310, B = 0.235, A = 1 } }
 }
 
-local currentColorIndex, isMetallic, currentPaintBomb = 1, false, nil
+local currentColorIndex, isMetallic = 1, false
+local currentPaintBomb, currentRustBrush, currentPolishBrush = nil, nil, nil
+local spawnedTools = {}
 
--- Display a message
 local function ShowInGameChatMessage(message)
+    if not CONFIG.ENABLE_CHAT_MESSAGES then return end
+
     local formattedMessage = "[SSPM] " .. message
 
     print("[SuperSprayPaintMod] " .. message)
 
-    -- Send a chat message using the ChatStruct
     local pc = FindFirstOf("PlayerController")
     if not pc or not pc:IsValid() then return end
 
     pcall(function()
-        -- Create a chat struct
         local chatStruct = {}
         chatStruct.Time_8_DF6F279248745BE38C2E40835DE88631 = 0
         chatStruct.User_6_4A6B517E45F066403FD3C4B4AA7C0FA3 = "SuperSprayPaintMod"
@@ -107,14 +108,12 @@ local function ShowInGameChatMessage(message)
     end)
 end
 
--- Check if a property exists
 local function HasProperty(obj, propName)
     if not obj then return false end
     local success, result = pcall(function() return obj[propName] ~= nil end)
     return success and result
 end
 
--- Infinite tools
 local function SetInfiniteToolProperties(tool)
     if not tool or not tool:IsValid() then return end
 
@@ -122,13 +121,11 @@ local function SetInfiniteToolProperties(tool)
     tool.MinQuantity = 0
     tool.MaxQuantity = CONFIG.INFINITE_QUANTITY
 
-    -- Call OnRep function to force visual update
     pcall(function()
         if HasProperty(tool, "OnRep_Quantity") then tool:OnRep_Quantity() end
     end)
 end
 
--- Set properties on a paint bomb
 local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
     if not paintBomb or not paintBomb:IsValid() then return end
 
@@ -138,42 +135,63 @@ local function SetPaintBombProperties(paintBomb, colorData, isMetallic)
 
     paintBomb.Metallic = isMetallic and 1.0 or 0.0
 
-    -- Set infinite usage
     SetInfiniteToolProperties(paintBomb)
 
     if HasProperty(paintBomb, "ApplicationAmount") then
-        paintBomb.ApplicationAmount = 1.0  -- Maximum application amount
+        paintBomb.ApplicationAmount = 1.0
     end
 
     if HasProperty(paintBomb, "ApplicationRate") then
-        paintBomb.ApplicationRate = 1.0  -- Maximum application rate
+        paintBomb.ApplicationRate = 1.0
     end
 
     if HasProperty(paintBomb, "PaintAmount") then
-        paintBomb.PaintAmount = 1.0  -- Maximum paint amount
+        paintBomb.PaintAmount = 1.0
     end
 
     if HasProperty(paintBomb, "PaintCoverage") then
-        paintBomb.PaintCoverage = 0.5  -- Maximum coverage
+        paintBomb.PaintCoverage = 0.5
     end
 
     if HasProperty(paintBomb, "PaintRate") then
-        paintBomb.PaintRate = 1.0  -- Maximum rate
+        paintBomb.PaintRate = 1.0
     end
 
     if HasProperty(paintBomb, "SprayAmount") then
-        paintBomb.SprayAmount = 1.0  -- Maximum spray amount
+        paintBomb.SprayAmount = 1.0
     end
 
     if HasProperty(paintBomb, "SprayRate") then
-        paintBomb.SprayRate = 1.0  -- Maximum spray rate
+        paintBomb.SprayRate = 1.0
     end
 
-    -- Call OnRep functions to force visual update
     pcall(function()
         if HasProperty(paintBomb, "OnRep_Color") then paintBomb:OnRep_Color() end
         if HasProperty(paintBomb, "OnRep_Metallic") then paintBomb:OnRep_Metallic() end
     end)
+end
+
+local function DestroyTool(tool)
+    if tool and tool:IsValid() then
+        local success, _ = pcall(function() return tool:K2_DestroyActor() end)
+        if not success then
+            print("[SuperSprayPaintMod] Warning: Failed to destroy tool: " .. tostring(tool))
+        end
+    end
+end
+
+local function DestroyAllSpawnedTools()
+    print("[SuperSprayPaintMod] Destroying all spawned tools...")
+    for i = #spawnedTools, 1, -1 do
+        local tool = spawnedTools[i]
+        DestroyTool(tool)
+        table.remove(spawnedTools, i)
+    end
+    spawnedTools = {}
+    currentPaintBomb = nil
+    currentRustBrush = nil
+    currentPolishBrush = nil
+    print("[SuperSprayPaintMod] All spawned tools destroyed.")
 end
 
 local function SpawnTool(toolPath, toolName, callback)
@@ -187,7 +205,6 @@ local function SpawnTool(toolPath, toolName, callback)
         return nil
     end
 
-    -- Calculate spawn position
     local location = pawn:K2_GetActorLocation()
     local yaw = (pawn:K2_GetActorRotation().Yaw or 0)
     local yawRad = yaw * (math.pi / 180.0)
@@ -197,13 +214,13 @@ local function SpawnTool(toolPath, toolName, callback)
         Z = (location.Z - CONFIG.GROUND_OFFSET) + CONFIG.GROUND_CLEARANCE
     }
 
-    -- Spawn the tool
     local world = pawn:GetWorld()
     local success, result = pcall(function()
         return world:SpawnActor(toolClass, spawnPos, {Pitch=0, Yaw=yaw, Roll=0})
     end)
 
     if success and result then
+        table.insert(spawnedTools, result)
         if callback then
             callback(result)
         end
@@ -214,8 +231,18 @@ local function SpawnTool(toolPath, toolName, callback)
     end
 end
 
--- Spawn a paint can
 function SpawnPaintCan()
+    if currentPaintBomb and currentPaintBomb:IsValid() then
+        print("[SuperSprayPaintMod] Destroying previous paint bomb.")
+        DestroyTool(currentPaintBomb)
+        for i = #spawnedTools, 1, -1 do
+            if spawnedTools[i] == currentPaintBomb then
+                table.remove(spawnedTools, i)
+                break
+            end
+        end
+    end
+
     local result = SpawnTool(TOOL_PATHS.PAINT_BOMB, "PaintBomb", function(paintBomb)
         currentPaintBomb = paintBomb
         SetPaintBombProperties(currentPaintBomb, Colors[currentColorIndex], isMetallic)
@@ -227,16 +254,15 @@ function SpawnPaintCan()
         print("[SuperSprayPaintMod] " .. message)
         ShowInGameChatMessage(message)
     end)
+    return result
 end
 
--- Update paint can properties
 local function UpdatePaintCan()
     if currentPaintBomb and currentPaintBomb:IsValid() then
         SetPaintBombProperties(currentPaintBomb, Colors[currentColorIndex], isMetallic)
     end
 end
 
--- Cycle colors and toggle sheen
 function CycleColor(direction)
     currentColorIndex = currentColorIndex + direction
     if currentColorIndex > #Colors then currentColorIndex = 1 end
@@ -263,35 +289,62 @@ function ToggleSheen()
     UpdatePaintCan()
 end
 
--- Spawn a rust brush
 function SpawnRustBrush()
-    SpawnTool(TOOL_PATHS.RUST_BRUSH, "RustBrush", function(brush)
-        SetInfiniteToolProperties(brush)
+    if currentRustBrush and currentRustBrush:IsValid() then
+        print("[SuperSprayPaintMod] Destroying previous rust brush.")
+        DestroyTool(currentRustBrush)
+        for i = #spawnedTools, 1, -1 do
+            if spawnedTools[i] == currentRustBrush then
+                table.remove(spawnedTools, i)
+                break
+            end
+        end
+    end
 
+    local result = SpawnTool(TOOL_PATHS.RUST_BRUSH, "RustBrush", function(brush)
+        currentRustBrush = brush
+        SetInfiniteToolProperties(brush)
         local message = "Spawned Rust Brush with infinite usage"
         print("[SuperSprayPaintMod] " .. message)
         ShowInGameChatMessage(message)
     end)
+    return result
 end
 
--- Spawn a polish sponge
 function SpawnPolishBrush()
-    SpawnTool(TOOL_PATHS.POLISH_BRUSH, "PolishBrush", function(brush)
-        SetInfiniteToolProperties(brush)
+    if currentPolishBrush and currentPolishBrush:IsValid() then
+        print("[SuperSprayPaintMod] Destroying previous polish brush.")
+        DestroyTool(currentPolishBrush)
+        for i = #spawnedTools, 1, -1 do
+            if spawnedTools[i] == currentPolishBrush then
+                table.remove(spawnedTools, i)
+                break
+            end
+        end
+    end
 
+    local result = SpawnTool(TOOL_PATHS.POLISH_BRUSH, "PolishBrush", function(brush)
+        currentPolishBrush = brush
+        SetInfiniteToolProperties(brush)
         local message = "Spawned Polish Sponge with infinite usage"
         print("[SuperSprayPaintMod] " .. message)
         ShowInGameChatMessage(message)
     end)
+    return result
 end
 
--- Register key bindings
 RegisterKeyBind(Key.F5, function() SpawnPaintCan(); return false end)
 RegisterKeyBind(Key.F6, function() SpawnRustBrush(); return false end)
 RegisterKeyBind(Key.F7, function() SpawnPolishBrush(); return false end)
 RegisterKeyBind(Key.OEM_FOUR, function() CycleColor(-1); return false end)  -- [
 RegisterKeyBind(Key.OEM_SIX, function() CycleColor(1); return false end)    -- ]
 RegisterKeyBind(Key.OEM_FIVE, function() ToggleSheen(); return false end)   -- \
+
+function OnModuleUnload()
+    print("[SuperSprayPaintMod] Mod unloading. Cleaning up...")
+    DestroyAllSpawnedTools()
+    print("[SuperSprayPaintMod] Mod unloaded.")
+end
 
 print("[SuperSprayPaintMod] Controls: F5 to spawn a spray paint can")
 print("[SuperSprayPaintMod] Controls: F6 to spawn a rust brush")
